@@ -11,38 +11,37 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         python = pkgs.python312;
+        buildInputs = with python.pkgs; [
+          openai
+          ipython
+          typeguard
+          python-dotenv
+          aiohttp
+          aiosqlite
+        ];
+        tools = with pkgs; [
+          python
+          uv
+          pyright
+          ruff
+        ];
       in
       {
-        packages.default = python.buildPythonApplication {
+        packages.default = pkgs.python312Packages.buildPythonPackage {
           name = "agentica";
           src = self;
 
           nativeBuildInputs = [
             python.pkgs.hatchling
           ];
+          inherit buildInputs;
 
-          buildInputs = [
-            python.pkgs.openai
-            python.pkgs.ipython
-            python.pkgs.typeguard
-            python.pkgs.python-dotenv
-            python.pkgs.aiohttp
-            python.pkgs.aiosqlite
-          ];
-
-          devDependencies = [
-            python.pkgs.pyright
-          ];
-
+          pyproject = true;
           doCheck = true;
         };
 
         devShells.default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            python
-            uv
-            pyright
-          ];
+          buildInputs = buildInputs ++ tools;
 
           shellHook = ''
             echo "Agentica Mini development environment"

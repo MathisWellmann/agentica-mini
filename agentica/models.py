@@ -98,9 +98,7 @@ LOCAL_PLATFORM = Model(
 def openrouter(model: str) -> Model:
     """Shorthand for making a model from an openrouter model slug"""
     if not API_KEY:
-        raise ValueError(
-            "No API key found. Set the API_KEY environment variable."
-        )
+        raise ValueError("No API key found. Set the API_KEY environment variable.")
     return Model(
         id=model,
         client=AsyncOpenAI(
