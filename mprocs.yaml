@@ -1,0 +1,14 @@
+procs:
+  nix-flake-check:
+    shell: "nix flake check"
+  nix-alejandra:
+    shell: "alejandra ."
+  nix-deadnix:
+    shell: "deadnix"
+  nix-statix:
+    shell: "statix check"
+
+  python-ruff:
+    shell: "ruff format ."
+  python-pyright:
+    shell: "pyright"

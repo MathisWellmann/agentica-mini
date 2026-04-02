@@ -9,3 +9,5 @@ cache.sqlite
 # Nix
 result
 .direnv/
+
+mprocs.log

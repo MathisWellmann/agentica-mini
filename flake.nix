@@ -6,9 +6,13 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
+  outputs = {
+    self,
+    nixpkgs,
+    flake-utils,
+  }:
+    flake-utils.lib.eachDefaultSystem (
+      system: let
         pkgs = nixpkgs.legacyPackages.${system};
         python = pkgs.python312;
         buildInputs = with python.pkgs; [
@@ -24,9 +28,14 @@
           uv
           pyright
           ruff
+          mprocs
         ];
-      in
-      {
+        nix_tools = with pkgs; [
+          alejandra
+          deadnix
+          statix
+        ];
+      in {
         packages.default = pkgs.python312Packages.buildPythonPackage {
           name = "agentica";
           src = self;
