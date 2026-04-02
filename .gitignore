@@ -5,3 +5,7 @@ cache.sqlite
 
 **/.env
 **/*.gitignore.*
+
+# Nix
+result
+.direnv/
