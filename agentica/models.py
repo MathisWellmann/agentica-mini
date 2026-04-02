@@ -14,6 +14,11 @@ class Model:
     extra_body: object | None = None
 
 
+# Configurable base URL for inference endpoint (defaults to OpenRouter)
+INFERENCE_BASE_URL = os.getenv("BASE_URL", "https://openrouter.ai/api/v1")
+INFERENCE_API_KEY = os.getenv("API_KEY", os.getenv("OPENROUTER_API_KEY", ""))
+
+
 CLUSTER_QWEN3 = Model(
     id="s3://models/Qwen/Qwen3-235B-A22B-Instruct-2507",
     client=AsyncOpenAI(base_url="http://10.141.3.26:8000/v1", api_key="EMPTY"),
@@ -22,24 +27,24 @@ CLUSTER_QWEN3 = Model(
 GEMINI_FLASH = Model(
     id="google/gemini-2.5-flash",
     client=AsyncOpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv("OPENROUTER_API_KEY") or "",
+        base_url=INFERENCE_BASE_URL,
+        api_key=INFERENCE_API_KEY or os.getenv("OPENROUTER_API_KEY") or "",
     ),
 )
 
 OPENROUTER_QWEN3 = Model(
     id="qwen/qwen3-235b-a22b-2507",
     client=AsyncOpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv("OPENROUTER_API_KEY") or "",
+        base_url=INFERENCE_BASE_URL,
+        api_key=INFERENCE_API_KEY or os.getenv("OPENROUTER_API_KEY") or "",
     ),
 )
 
 CEREBRAS_QWEN3 = Model(
     id="qwen/qwen3-235b-a22b-2507",
     client=AsyncOpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv("OPENROUTER_API_KEY") or "",
+        base_url=INFERENCE_BASE_URL,
+        api_key=INFERENCE_API_KEY or os.getenv("OPENROUTER_API_KEY") or "",
     ),
     extra_body={"provider": {"order": ["cerebras"], "allow_fallbacks": False}},
 )
@@ -47,8 +52,8 @@ CEREBRAS_QWEN3 = Model(
 BASETEN_DEEPSEEK_V3 = Model(
     id="deepseek/deepseek-chat-v3-0324",
     client=AsyncOpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv("OPENROUTER_API_KEY") or "",
+        base_url=INFERENCE_BASE_URL,
+        api_key=INFERENCE_API_KEY or os.getenv("OPENROUTER_API_KEY") or "",
     ),
     # extra_body={"provider": {"order": ["baseten"], "allow_fallbacks": False}},
 )
@@ -56,8 +61,8 @@ BASETEN_DEEPSEEK_V3 = Model(
 AUTO = Model(
     id="openrouter/auto",
     client=AsyncOpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv("OPENROUTER_API_KEY") or "",
+        base_url=INFERENCE_BASE_URL,
+        api_key=INFERENCE_API_KEY or os.getenv("OPENROUTER_API_KEY") or "",
     ),
 )
 
@@ -74,8 +79,8 @@ OPENAI_4_1 = Model(
 CLAUDE_SONNET_4 = Model(
     id="anthropic/claude-sonnet-4",
     client=AsyncOpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=os.getenv("OPENROUTER_API_KEY") or "",
+        base_url=INFERENCE_BASE_URL,
+        api_key=INFERENCE_API_KEY or os.getenv("OPENROUTER_API_KEY") or "",
     ),
 )
 
@@ -97,12 +102,12 @@ LOCAL_PLATFORM = Model(
 
 def openrouter(model: str) -> Model:
     """Shorthand for making a model from an openrouter model slug"""
-    api_key = os.getenv("OPENROUTER_API_KEY")
+    api_key = os.getenv("OPENROUTER_API_KEY") or INFERENCE_API_KEY
     assert api_key
     return Model(
         id=model,
         client=AsyncOpenAI(
-            base_url="https://openrouter.ai/api/v1",
+            base_url=INFERENCE_BASE_URL,
             api_key=api_key,
         ),
     )
