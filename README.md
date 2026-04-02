@@ -57,13 +57,13 @@ Environment variables
 ---------------------
 
 Agentica uses OpenRouter for inference by default, but the endpoint is
-configurable. You can use either the `BASE_URL` and `API_KEY` environment
-variables to point to any OpenAI-compatible API:
+configurable. Set the following environment variables to point to any
+OpenAI-compatible API:
 
 | Variable   | Description              | Default                            |
 | ---------- | ------------------------ | ---------------------------------- |
 | `BASE_URL` | Inference endpoint URL   | `https://openrouter.ai/api/v1`     |
-| `API_KEY`  | API key for the endpoint | Falls back to `OPENROUTER_API_KEY` |
+| `API_KEY`  | API key for the endpoint | (required)                         |
 
 It is recommended to put environment variables in a `.env` file that is not
 committed to git:
@@ -80,9 +80,6 @@ Or set them as environment variables in your shell:
 export BASE_URL="https://openrouter.ai/api/v1"
 export API_KEY="your-api-key"
 ~~~~
-
-**Legacy support:** The `OPENROUTER_API_KEY` variable still works and will be
-used if `API_KEY` is not set.
 
 
 Usage
