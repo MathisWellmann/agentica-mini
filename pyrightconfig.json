@@ -3,9 +3,10 @@
   "exclude": [
     "src/demo",
     ".venv/**",
+    "result/**",
     "**/__pycache__",
     "**/*.pyc",
-    "**/*.pyo", 
+    "**/*.pyo",
     "**/*.pyd",
     "**/build",
     "**/dist",

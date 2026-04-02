@@ -231,21 +231,21 @@ class AgentRuntime:
     async def __auto_select_model(self, user_prompt: str) -> Model:
         selector_agent = await self.spawn_agent(
             """You are an LLM selector. You pick the appropriate model for a given task.
-            
+
             Model selection guidance:
-            - For the most complex tasks, like long-horizon tasks involving the orchestration of many sub agents, use sonnet-4
-            - For medium complexity tasks, like writing/reading code, use gpt-4.1
-            - For simple tasks, like quick calculations or listeners, use Qwen3""",
-            model=models.CLUSTER_QWEN3,
-            sonnet_4=models.CLAUDE_SONNET_4,
-            gpt_4_1=models.OPENAI_4_1,
-            qwen3=models.CLUSTER_QWEN3,
+            - For the most complex tasks, like long-horizon tasks involving the orchestration of many sub agents, use nemotron-3-super
+            - For medium complexity tasks, like writing/reading code, use glm-4.7
+            - For simple tasks, like quick calculations or listeners, use qwen-3.5""",
+            model=models.QWEN_3_5,
+            nemotron_3_super=models.NEMOTRON_3_SUPER,
+            glm_4_7=models.GLM_4_7,
+            qwen_3_5=models.QWEN_3_5,
         )
 
         return await selector_agent.call(
             Model,
             f"""What would be the best model to deal with the following user query:
-            
+
             ```
             {user_prompt}
             ```""",
@@ -256,7 +256,7 @@ class AgentRuntime:
 
 
 # Gets keys from env variables, usually a .env
-local_runtime = AgentRuntime(models.CLAUDE_SONNET_4, local_cache)
+local_runtime = AgentRuntime(models.QWEN_3_5, local_cache)
 
 type ModelStrings = Literal[
     "openai:gpt-3.5-turbo",
